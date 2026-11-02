@@ -1,44 +1,991 @@
-header {
-background-color: red;
-color: #fff;
-padding: 10px 0;
+/* ------------------------------------------------------------------
+   Themes. The default is Midnight (black + silver + champagne).
+   Pick another from the dropdown in the nav bar. To add a theme, copy a
+   [data-theme="..."] block, change the colors, and add an <option> in index.html.
+   ------------------------------------------------------------------ */
+:root {
+    color-scheme: dark;
+    --bg: #000000;
+    --panel: #0d0d0d;
+    --text: #c0c0c0;         /* body text, nav links (silver) */
+    --text-dim: #8f8f8f;     /* secondary text */
+    --line: #3a3a3a;         /* subtle borders */
+    --strong: #c0c0c0;       /* select border, photo fallback */
+    --heading: #f1e4d3;      /* light accent for headings */
+    --accent: #f1e4d3;       /* links and hover */
+    --accent-hover: #ffffff;
+
+    /* Metallic shimmer colors (edges of boxes, header/footer lines, name) */
+    --silver-m: #c0c0c0;
+    --silver-hi: #ffffff;
+    --gold: #d4af37;
+    --gold-hi: #fff1a8;
+    --glow: rgba(212, 175, 55, 0.14);
+    --glow-hover: rgba(212, 175, 55, 0.32);
+    --h1-metal: linear-gradient(90deg, #c0c0c0, #f6e7b0, #ffffff, #d4af37, #c0c0c0);
+
+    /* Cat paw button colors */
+    --cat-face: var(--gold);
+    --cat-face-shadow: color-mix(in srgb, var(--gold) 68%, #000);
+    --cat-fur: #e6e6ea;
+    --cat-label: #111111;
 }
 
-nav ul {
-list-style: none;
-display: flex;
-justify-content: center;
+/* Light themes */
+:root[data-theme="silver"] {
+    color-scheme: light;
+    --bg: #f4f4f5;
+    --panel: #ffffff;
+    --text: #2e2e2e;
+    --text-dim: #666666;
+    --line: #d4d4d6;
+    --strong: #9a9a9e;
+    --heading: #111111;
+    --accent: #3d3d44;
+    --accent-hover: #000000;
 }
 
-nav li {
-margin: 0 20px;
+:root[data-theme="pearl"] {
+    color-scheme: light;
+    --bg: #faf7f2;
+    --panel: #ffffff;
+    --text: #3a3631;
+    --text-dim: #6b645b;
+    --line: #e4dccf;
+    --strong: #b9a48a;
+    --heading: #2a2420;
+    --accent: #8a5a32;
+    --accent-hover: #5e3a1c;
 }
 
-nav a {
-text-decoration: none;
-color: #fff;
+:root[data-theme="sky"] {
+    color-scheme: light;
+    --bg: #f2f7fb;
+    --panel: #ffffff;
+    --text: #2c3a47;
+    --text-dim: #52606d;
+    --line: #d3e1ee;
+    --strong: #7fa6c7;
+    --heading: #14283a;
+    --accent: #1f6aa5;
+    --accent-hover: #124a77;
+}
+
+/* Metallic colors for the light themes (darker, so the shimmer stays visible on white) */
+:root[data-theme="silver"],
+:root[data-theme="pearl"],
+:root[data-theme="sky"] {
+    --silver-m: #a4a4ab;
+    --silver-hi: #dcdce2;
+    --gold: #c9a227;
+    --gold-hi: #e8cf6a;
+    --glow: rgba(150, 120, 30, 0.10);
+    --glow-hover: rgba(150, 120, 30, 0.25);
+    --h1-metal: linear-gradient(90deg, #5b5b63, #9a7414, #2f2f35, #a8741a, #5b5b63);
+    --cat-fur: #4a4a52; /* darker paw so it shows up on a light page */
+}
+
+/* ------------------------------------------------------------------
+   Shimmer animations
+   --angle lets the browser animate the angle of a conic gradient, so a
+   bright glint travels around the edge of each box. Browsers without
+   @property support still show the metallic edge, just without motion.
+   ------------------------------------------------------------------ */
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes spin-edge {
+    to { --angle: 360deg; }
+}
+
+@keyframes sheen {
+    to { background-position: 200% 0; }
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; /* keeps section headings clear of the floating navbar */
 }
 
 body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
-img {
-max-width: 60%;
-
+h1, h2, h3 {
+    color: var(--heading);
 }
 
-.block { 
+/* Your name: slow silver-and-gold shimmer */
+h1 {
+    background: var(--h1-metal);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: sheen 8s linear infinite;
+}
+
+a {
+    color: var(--accent);
+}
+
+a:hover {
+    color: var(--accent-hover);
+}
+
+/* ------------------------------------------------------------------
+   Floating pill navbar (idea from the NeoNav demo), in the page's theme
+   ------------------------------------------------------------------ */
+.site-header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: calc(100% - 60px);
+    max-width: 1000px;
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 22px;
+    border-radius: 50px;
+    background: color-mix(in srgb, var(--panel) 78%, transparent);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), 0 0 14px var(--glow);
+}
+
+/* Silver/gold edge with a glint that travels around the pill (navbar and footer) */
+.navbar::after,
+.footer::after {
+    content: "";
     position: absolute;
-    top: 220px;
-    left: 890px;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: conic-gradient(from var(--angle),
+        var(--silver-m), var(--gold), var(--silver-hi), var(--gold-hi),
+        var(--silver-m), var(--gold), var(--silver-m));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: spin-edge 9s linear infinite;
 }
 
-footer {
-text-align: center;
-padding: 10px;
-background-color: red;
-color: #fff;
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    white-space: nowrap;
 }
+
+.navbar-brand:hover {
+    color: var(--heading);
+}
+
+.logo-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--silver-m), var(--gold));
+    color: #111111;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 13px;
+    border-radius: 25px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    color: var(--heading);
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.nav-icon,
+.mobile-menu-icon {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+/* Mobile: hamburger opens a full-screen menu */
+.mobile-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.mobile-toggle:hover {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.mobile-toggle:focus-visible,
+.mobile-menu-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 22px;
+}
+
+.hamburger span {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+}
+
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1600;
+    overflow-y: auto;
+    background: var(--bg);
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 0.4s;
+}
+
+.mobile-menu.active {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s;
+}
+
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.mobile-menu-close {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--text);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.mobile-menu-close:hover {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.mobile-menu-nav {
+    list-style: none;
+    margin: 0;
+    padding: 28px 24px 8px;
+}
+
+.mobile-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--panel);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.mobile-menu-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link.active {
+    color: var(--heading);
+    border-color: var(--strong);
+    transform: translateX(6px);
+}
+
+.mobile-menu-theme {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 24px 32px;
+    padding: 16px 22px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    color: var(--text-dim);
+}
+
+/* Theme switcher: four small color swatches in a pill (in the navbar, and in the mobile menu) */
+.theme-switch {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel);
+}
+
+.theme-swatch {
+    --sw-a: #000000;
+    --sw-b: #d4af37;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--strong);
+    background: linear-gradient(135deg, var(--sw-a) 50%, var(--sw-b) 50%);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.theme-swatch:hover {
+    transform: scale(1.2);
+}
+
+.theme-swatch[aria-pressed="true"],
+.theme-swatch:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Each swatch shows its own theme's page color and accent, whatever theme is active */
+.theme-swatch[data-theme-choice="dark"]   { --sw-a: #000000; --sw-b: #d4af37; }
+.theme-swatch[data-theme-choice="silver"] { --sw-a: #f4f4f5; --sw-b: #8f8f95; }
+.theme-swatch[data-theme-choice="pearl"]  { --sw-a: #faf7f2; --sw-b: #8a5a32; }
+.theme-swatch[data-theme-choice="sky"]    { --sw-a: #f2f7fb; --sw-b: #1f6aa5; }
+
+/* ------------------------------------------------------------------
+   Page content
+   ------------------------------------------------------------------ */
+img {
+    max-width: 60%;
+}
+
+/* The navbar floats over the top of the page, so the intro starts lower */
+#about .container {
+    padding-top: 120px;
+}
+
+.subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--accent);
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+/* One-line role under your name, and the contact line in the hero */
+.role {
+    text-align: center;
+    margin: -10px 0 6px;
+    color: var(--text-dim);
+}
+
+.hero-contact {
+    text-align: center;
+}
+
+/* Profile photo: centered under the heading, with a rotating silver/gold ring */
+.block {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.block img {
+    box-sizing: border-box;
+    width: 180px;
+    height: 180px;
+    max-width: none;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    background: conic-gradient(from var(--angle),
+        var(--silver-m), var(--gold), var(--silver-hi), var(--gold-hi), var(--silver-m)) border-box;
+    box-shadow: 0 0 16px var(--glow);
+    animation: spin-edge 6s linear infinite;
+}
+
+/* Project boxes: a bright silver/gold glint travels around the edge */
+.project {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(var(--panel), var(--panel)) padding-box,
+        conic-gradient(from var(--angle),
+            var(--silver-m), var(--gold), var(--silver-hi), var(--gold-hi),
+            var(--silver-m), var(--gold), var(--silver-m)) border-box;
+    box-shadow: 0 0 14px var(--glow);
+    animation: spin-edge 8s linear infinite;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Offset the cards so they don't all shimmer in sync */
+.project:nth-of-type(2n)  { animation-delay: -2.5s; }
+.project:nth-of-type(3n)  { animation-delay: -5s; }
+
+.project:hover {
+    box-shadow: 0 0 22px var(--glow-hover);
+    animation-duration: 3s;
+}
+
+/* Project cards: name, short tagline, then the tech line */
+.project h3 {
+    margin: 0 0 2px;
+}
+
+.tagline {
+    margin: 0 0 10px;
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.tech {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--text-dim);
+    font-size: 0.9em;
+}
+
+/* Experience entries: title and dates on one row, organization below */
+.entry {
+    margin-bottom: 28px;
+}
+
+.entry-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px 16px;
+}
+
+.entry-head h3 {
+    margin: 0;
+}
+
+.dates {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--text-dim);
+    font-size: 0.9em;
+}
+
+.org {
+    margin: 2px 0 8px;
+    color: var(--accent);
+}
+
+/* Skills: category on the left, items on the right */
+.skills {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 10px 28px;
+    margin: 0;
+}
+
+.skills dt {
+    color: var(--heading);
+    font-weight: bold;
+}
+
+.skills dd {
+    margin: 0;
+}
+
+/* ------------------------------------------------------------------
+   Contact form (opens the visitor's email app with the message filled in)
+   ------------------------------------------------------------------ */
+.contact-form {
+    max-width: 600px;
+    margin: 24px 0 0;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--panel);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.form-input,
+.form-textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-dim);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--strong);
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-hi));
+    color: #111111;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 14px var(--glow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 22px var(--glow-hover);
+}
+
+.submit-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.form-note {
+    margin: 14px 0 0;
+    min-height: 1.4em;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* ------------------------------------------------------------------
+   Pill footer (idea from the NeoNav demo)
+   ------------------------------------------------------------------ */
+.footer {
+    position: relative;
+    box-sizing: border-box;
+    width: calc(100% - 60px);
+    max-width: 1000px;
+    margin: 30px auto 40px;
+    padding: 22px 36px;
+    border-radius: 50px;
+    background: var(--panel);
+    box-shadow: 0 0 14px var(--glow);
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--heading);
+    font-weight: 700;
+}
+
+.footer-brand:hover {
+    color: var(--heading);
+}
+
+.footer-links {
+    display: flex;
+    gap: 26px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-link {
+    padding: 8px 0;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.25s ease;
+}
+
+.footer-link:hover {
+    color: var(--accent);
+}
+
+.social-link {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--text);
+    transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.social-link:hover {
+    color: var(--accent);
+    border-color: var(--strong);
+    transform: translateY(-2px);
+}
+
+.social-icon {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.footer-copy {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+@media (max-width: 1060px) {
+    .navbar-nav,
+    .navbar > .theme-switch {
+        display: none;
+    }
+
+    .mobile-toggle {
+        display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        top: 14px;
+        width: calc(100% - 30px);
+    }
+
+    .navbar {
+        padding: 8px 16px;
+    }
+
+    .footer {
+        width: calc(100% - 30px);
+        padding: 20px 24px;
+        border-radius: 32px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .contact-form {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 600px) {
+    .skills {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .skills dd {
+        margin-bottom: 12px;
+    }
+}
+
+/* Anyone who asks their device to reduce motion gets a still metallic finish */
+@media (prefers-reduced-motion: reduce) {
+    h1,
+    .navbar::after,
+    .footer::after,
+    .block img,
+    .project {
+        animation: none;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .mobile-menu,
+    .mobile-menu.active {
+        transition: none;
+    }
+}
+
+
+/* ------------------------------------------------------------------
+   Cat paw "Contact me" button (adapted from the "Get started cat" CodePen).
+   Only the component's own rules are kept; the demo page's body/.demo
+   rules are left out. Colors come from the theme variables at the top.
+   ------------------------------------------------------------------ */
+.cat-wrap {
+    text-align: center;
+    margin: 0 0 20px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.get-started-cat {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 340 / 150;
+    height: auto;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 1rem;
+    outline: none;
+    cursor: pointer;
+    overflow: hidden;
+    --flap: 0;
+    --btn-h: 29.33%;
+    --btn-h-full: 29.33%;
+    --btn-inset-x: 20.59%;
+}
+
+.get-started-cat:hover {
+    color: #fff;
+}
+
+.get-started-cat__scene {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.get-started-cat:focus-visible {
+    box-shadow: 0 0 0 3px var(--accent);
+}
+
+.get-started-cat__scene--front {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.get-started-cat__btn-back {
+    position: absolute;
+    left: var(--btn-inset-x);
+    right: var(--btn-inset-x);
+    top: 8%;
+    height: var(--btn-h-full);
+    border-radius: 22px;
+    background: rgb(0 0 0 / 0.22);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.get-started-cat__button {
+    transition: transform 0.1s ease-in-out;
+}
+
+.get-started-cat__label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 8%;
+    height: var(--btn-h, 29.33%);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--cat-label);
+    pointer-events: none;
+    overflow: hidden;
+    transform-origin: center top;
+    transition: transform 0.1s ease-in-out;
+}
+
+.get-started-cat[data-zone="bottom"] .get-started-cat__label {
+    transform: perspective(900px) rotateX(calc(var(--flap) * -10deg));
+    transition: none;
+}
+
+.get-started-cat__button-face,
+.get-started-cat__button-shadow {
+    transition: opacity 0.1s ease-in-out;
+}
+
+.get-started-cat:active:not([data-zone="bottom"]) .get-started-cat__button {
+    transform: translateY(5px);
+}
+
+.get-started-cat:active:not([data-zone="bottom"]) .get-started-cat__label {
+    transform: translateY(5px);
+}
+
+.get-started-cat:active:not([data-zone="bottom"]) .get-started-cat__button-shadow {
+    opacity: 0;
+}
+
+.get-started-cat__reach {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.get-started-cat[data-reduced-motion="true"] .get-started-cat__reach,
+.get-started-cat[data-reduced-motion="true"] .get-started-cat__paw-front {
+    display: none;
+}
+
+.get-started-cat[data-reduced-motion="true"] .get-started-cat__button,
+.get-started-cat[data-reduced-motion="true"] .get-started-cat__label {
+    transform: none !important;
+    --flap: 0 !important;
+    --btn-h: 29.33% !important;
+}
+
+.get-started-cat__when-bottom {
+    display: none;
+}
+
+.get-started-cat[data-zone="bottom"] .get-started-cat__when-side {
+    display: none;
+}
+
+.get-started-cat[data-zone="bottom"] .get-started-cat__when-bottom {
+    display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .get-started-cat__reach,
+    .get-started-cat__button,
+    .get-started-cat__label {
+        transition: none;
+    }
+}
+
+/* Theme the SVG: CSS fill overrides the fill attributes in the markup */
+.get-started-cat__button-face   { fill: var(--cat-face); }
+.get-started-cat__button-shadow { fill: var(--cat-face-shadow); }
+.get-started-cat [fill="#fff"]  { fill: var(--cat-fur); }

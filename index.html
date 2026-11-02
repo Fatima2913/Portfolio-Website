@@ -1,119 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Fatima Qureshi - Portfolio</title>
-        <link rel="stylesheet" href="./style.css">
-        <style>
-
-.container {
-max-width: 960px;
-margin: 0 auto;
-padding: 40px;
-}
-
-.project {
-margin-bottom: 20px;
-border: 1px solid #ccc;
-padding: 20px;
-}
-</style>
-
+    <title>Fatima Qureshi - Portfolio</title>
+    <link rel="stylesheet" href="./style.css">
+    <script>
+        // Apply the saved theme before the page paints, so there is no flash of the wrong colors
+        (function () {
+            try {
+                var t = localStorage.getItem('theme');
+                if (t) document.documentElement.setAttribute('data-theme', t);
+            } catch (e) {}
+        })();
+    </script>
+    <style>
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <nav>
-        <ul>
-            <li><a href="#about">About Me</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
+<header class="site-header">
+    <nav class="navbar" aria-label="Main">
+        <a class="navbar-brand" href="#about"><span class="logo-icon">FQ</span>Fatima</a>
+        <ul class="navbar-nav">
+            <li><a class="nav-link" href="#about"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>About Me</a></li>
+            <li><a class="nav-link" href="#projects"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Projects</a></li>
+            <li><a class="nav-link" href="#experience"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Experience</a></li>
+            <li><a class="nav-link" href="#skills"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Skills</a></li>
+            <li><a class="nav-link" href="#contact"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>Contact</a></li>
         </ul>
+        <div class="theme-switch" role="group" aria-label="Color theme">
+            <button type="button" class="theme-swatch" data-theme-choice="dark" title="Midnight" aria-label="Midnight theme" aria-pressed="true"></button>
+            <button type="button" class="theme-swatch" data-theme-choice="silver" title="Silver" aria-label="Silver theme" aria-pressed="false"></button>
+            <button type="button" class="theme-swatch" data-theme-choice="pearl" title="Pearl" aria-label="Pearl theme" aria-pressed="false"></button>
+            <button type="button" class="theme-swatch" data-theme-choice="sky" title="Sky" aria-label="Sky theme" aria-pressed="false"></button>
+        </div>
+        <button type="button" class="mobile-toggle" id="mobileToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+            <span class="hamburger"><span></span><span></span><span></span></span>
+        </button>
     </nav>
 </header>
 
-
-<section id="about">
-
-<div class="container">
-<h1 style="text-align: center;"> Fatima Qureshi, Student </h1>
-<p style="font-family: 'Courier New', Courier, monospace; color: brown; padding-bottom: 40px; text-align: center;"> B.S. in Computer Science at Iowa State University</p>
-
-<div class="block">
-<img src="./images/profile.jpeg" alt="Profile Photo">
-</div>
-
-<p style="padding-bottom: 0px;"> <em>Relevant Coursework: Object-Oriented Programming, Data Structures & Algorithms, </em></p>
-<p style="padding-top: 0px;"><em> UI construction, Computer architecture, ML, Cybersecurity, Ethics of AI, Statistics </em></p>
-<p style="padding-top: 0px; padding-bottom: 30px;"><em> for Computer Science</em></p>
-</section>
-
-
-<section id="projects">
-
-<div class="container">
-<h2>Projects</h2>
-<div class="project">
-    <div class="block1" style="max-width: 50%;">
-<img src= "./images/Python.png" alt="Project 1">
-</div>
-<h3>Project 1: Ultimate To-Do List Manager [Python, Data Structures, File I/O]</h3>
-<p>  
-    <ul>
-    <li>Built a command-line productivity app with a dictionary-of-lists workflow (backlog, to-do, in progress, completed) </li>
-    <li>Implemented file save/load, input validation, and modular functions for maintainable operations </li>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-header">
+        <a class="navbar-brand" href="#about"><span class="logo-icon">FQ</span>Fatima</a>
+        <button type="button" class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
+    </div>
+    <ul class="mobile-menu-nav">
+            <li><a class="mobile-menu-link" href="#about"><svg class="mobile-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>About Me</a></li>
+            <li><a class="mobile-menu-link" href="#projects"><svg class="mobile-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Projects</a></li>
+            <li><a class="mobile-menu-link" href="#experience"><svg class="mobile-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Experience</a></li>
+            <li><a class="mobile-menu-link" href="#skills"><svg class="mobile-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Skills</a></li>
+            <li><a class="mobile-menu-link" href="#contact"><svg class="mobile-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>Contact</a></li>
     </ul>
-</p>
-
-    <div class="block1" style="max-width: 50%;">
-<img src= "./images/Java.png" alt="Project 2">
-</div>
-<h3>Project 2: Digital Logic Circuit Simulator [Java, Data Structures, Binary Trees, Stack-Based Algorithms]</h3>
-<p>  
-    <ul>
-    <li>Implemented prefix-notation circuit parser with iterative, stack-based tree construction (no recursion) </li>
-    <li>Evaluated logic gate outputs for given inputs and designed class hierarchy to meet API specifications </li>
-    </ul>
-</p>
-
-    <div class="block2" style="max-width: 40%;">
-<img src= "./images/Latex.jpg" alt="Project 3">
-</div>
-<h3>Project 3: Discrete Mathematics Notes & Assignment Template [LaTeX, Mathematical Typesetting, TikZ]</h3>
-<p>
-    <ul>
-        <li>Designed a reusable assignment template with custom commands for problems and solutions, ensuring consistent formatting across coursework</li>
-        <li>Created visual representations of graphs, trees, and relations to support formal proofs and explanations</li>
-    </ul>
-</p>
-
-    <div class="block1" style="max-width: 40%;">
-<img src= "./images/html&css.png" alt="Project 4">
-</div>
-<h3>Project 4: HTML and CSS</h3>
-<p>
-    <ul>
-        <li>Designed a Web page using HTML and CSS with navigation bar on top</li>
-    </ul>
-</p>
-
+    <div class="mobile-menu-theme"><span>Theme</span>
+        <div class="theme-switch" role="group" aria-label="Color theme">
+            <button type="button" class="theme-swatch" data-theme-choice="dark" title="Midnight" aria-label="Midnight theme" aria-pressed="true"></button>
+            <button type="button" class="theme-swatch" data-theme-choice="silver" title="Silver" aria-label="Silver theme" aria-pressed="false"></button>
+            <button type="button" class="theme-swatch" data-theme-choice="pearl" title="Pearl" aria-label="Pearl theme" aria-pressed="false"></button>
+            <button type="button" class="theme-swatch" data-theme-choice="sky" title="Sky" aria-label="Sky theme" aria-pressed="false"></button>
+        </div>
     </div>
 </div>
+
+<section id="about">
+    <div class="container">
+        <h1 style="text-align: center;">Fatima Qureshi</h1>
+        <p class="role">Computer Science student, software and databases</p>
+        <p class="subtitle">
+            B.S. in Computer Science at Iowa State University (graduating May 2027)
+        </p>
+
+        <div class="block">
+            <img src="./images/profile.jpeg" alt="Profile Photo">
+        </div>
+
+        <p>
+            I am a Computer Science senior with hands-on experience in Java, Android development, SQL, and IT support.
+            I enjoy building reliable software and solving problems, and I am open to relocation for software
+            development, quality engineering, or technical support roles.
+        </p>
+
+        <p class="hero-contact"><a href="mailto:fatimaq@iastate.edu">fatimaq@iastate.edu</a></p>
+
+        <p style="padding-bottom: 0px;"><em>Relevant Coursework: Object-Oriented Programming, Data Structures &amp; Algorithms,</em></p>
+        <p style="padding-top: 0px; padding-bottom: 0px;"><em>Database Systems, Computer Architecture, Machine Learning, Cybersecurity, Ethics of AI,</em></p>
+        <p style="padding-top: 0px; padding-bottom: 30px;"><em>Statistics for Computer Science</em></p>
+
+        <!-- Cat paw button: adapted from the "Get started cat" CodePen (hannahgoodridge.dev). Check the original's license and credit it if required. -->
+        <div class="cat-wrap">
+              <a
+                id="cat"
+                class="get-started-cat"
+                href="#contact"
+                data-swiping="false"
+                data-zone="side"
+                data-phase="idle"
+                aria-describedby="cat-hint"
+              >
+                <span class="get-started-cat__btn-back" aria-hidden="true"></span>
+
+                <svg class="get-started-cat__scene" viewBox="0 0 340 150" aria-hidden="true" focusable="false">
+                  <defs>
+                    <filter id="limb-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.22" />
+                    </filter>
+                  </defs>
+
+                  <g id="behind-reach" class="get-started-cat__reach" filter="url(#limb-shadow)">
+                    <path id="arm-behind" class="get-started-cat__arm" fill="#fff" />
+                    <g id="paw-behind">
+                      <g class="get-started-cat__when-side" transform="scale(0.9)">
+                        <g class="get-started-cat__paw-palm">
+                          <circle cx="0" cy="-5" r="7.5" fill="#fff" />
+                          <ellipse cx="0" cy="-5.5" rx="4.5" ry="3" fill="#e99298" />
+                        </g>
+                        <g class="get-started-cat__paw-toes">
+                          <circle cx="-9.29" cy="-10.37" r="4.75" fill="#fff" />
+                          <circle cx="-3.67" cy="-15.08" r="4.75" fill="#fff" />
+                          <circle cx="3.67" cy="-15.08" r="4.75" fill="#fff" />
+                          <circle cx="9.29" cy="-10.36" r="4.75" fill="#fff" />
+                          <circle cx="-9.29" cy="-10.37" r="3.1" fill="#e99298" />
+                          <circle cx="-3.67" cy="-15.08" r="3.1" fill="#e99298" />
+                          <circle cx="3.67" cy="-15.08" r="3.1" fill="#e99298" />
+                          <circle cx="9.29" cy="-10.36" r="3.1" fill="#e99298" />
+                        </g>
+                      </g>
+                      <g class="get-started-cat__when-bottom">
+                        <g class="get-started-cat__paw-palm">
+                          <circle cx="0" cy="-5" r="7.5" fill="#fff" />
+                        </g>
+                        <g class="get-started-cat__paw-toes">
+                          <circle cx="-9.29" cy="-10.37" r="4.75" fill="#fff" />
+                          <circle cx="-3.67" cy="-15.08" r="4.75" fill="#fff" />
+                          <circle cx="3.67" cy="-15.08" r="4.75" fill="#fff" />
+                          <circle cx="9.29" cy="-10.36" r="4.75" fill="#fff" />
+                          <g transform="translate(-9.29 -10.37) rotate(-60)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                          <g transform="translate(-3.67 -15.08) rotate(-20)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                          <g transform="translate(3.67 -15.08) rotate(20)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                          <g transform="translate(9.29 -10.36) rotate(60)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+
+                  <g class="get-started-cat__button">
+                    <rect
+                      id="button-shadow"
+                      class="get-started-cat__button-shadow"
+                      x="70"
+                      y="17"
+                      width="200"
+                      height="44"
+                      rx="22"
+                      ry="22"
+                      fill="#3aa89f"
+                    />
+                    <rect
+                      id="button-face"
+                      class="get-started-cat__button-face"
+                      x="70"
+                      y="12"
+                      width="200"
+                      height="44"
+                      rx="22"
+                      ry="22"
+                      fill="#4ecdc4"
+                    />
+                  </g>
+                </svg>
+
+                <span class="get-started-cat__label">
+                  Contact me
+                  <span class="sr-only"> (jumps to the contact section)</span>
+                </span>
+
+                <svg class="get-started-cat__scene get-started-cat__scene--front" viewBox="0 0 340 150" aria-hidden="true" focusable="false">
+                  <defs>
+                    <filter id="limb-shadow-front" x="-50%" y="-50%" width="200%" height="200%">
+                      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.22" />
+                    </filter>
+                  </defs>
+                  <g id="front-group" class="get-started-cat__paw-front" filter="url(#limb-shadow-front)" style="opacity: 0">
+                    <path id="arm-front" class="get-started-cat__arm" fill="#fff" />
+                    <g id="paw-front">
+                      <g class="get-started-cat__paw-palm">
+                        <circle cx="0" cy="-5" r="7.5" fill="#fff" />
+                      </g>
+                      <g class="get-started-cat__paw-toes">
+                        <circle cx="-9.29" cy="-10.37" r="4.75" fill="#fff" />
+                        <circle cx="-3.67" cy="-15.08" r="4.75" fill="#fff" />
+                        <circle cx="3.67" cy="-15.08" r="4.75" fill="#fff" />
+                        <circle cx="9.29" cy="-10.36" r="4.75" fill="#fff" />
+                        <g transform="translate(-9.29 -10.37) rotate(-60)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                        <g transform="translate(-3.67 -15.08) rotate(-20)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                        <g transform="translate(3.67 -15.08) rotate(20)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                        <g transform="translate(9.29 -10.36) rotate(60)"><path d="M-1 0.5 L0 -4.2 L1 0.5 Z" fill="#fff" /></g>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+
+                <span id="cat-hint" class="sr-only">
+                  Decorative animation: a cat paw may reach out when you hover near this button.
+                </span>
+              </a>
+        </div>
+
+    </div>
+</section>
+
+<section id="projects">
+    <div class="container">
+        <h2>Projects</h2>
+        <p><em>Source code for course projects is not published, in line with academic integrity policies. These descriptions summarize what I built.</em></p>
+
+        <div class="project">
+            <h3>SideQuest Mobile App</h3>
+            <p class="tagline">skill-sharing Android app</p>
+            <p class="tech">Java, Android Studio, Spring Boot, REST API, Volley, WebSockets (in progress) | Fall 2026 to present</p>
+            <ul>
+                <li>Team-built skill-sharing Android app with a Spring Boot REST backend: developed the login and booking pages using Volley, and now building the events/workshops page, discussion page, and a real-time chat feature with WebSockets</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <h3>University Database System</h3>
+            <p class="tagline">relational schema and JDBC operations</p>
+            <p class="tech">Java, JDBC, MySQL, SQL</p>
+            <ul>
+                <li>Designed a normalized relational schema with primary keys, foreign-key constraints, and cascading update and delete behavior</li>
+                <li>Built Java/JDBC operations for inserting, updating, deleting, and querying records stored in MySQL</li>
+                <li>Added indexes to frequently queried fields and structured SQL queries to improve database access patterns</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <div class="block1" style="max-width: 50%;">
+                <img src="./images/Java.png" alt="Digital Logic Circuit Simulator">
+            </div>
+            <h3>Digital Logic Circuit Simulator</h3>
+            <p class="tagline">prefix parser with no recursion</p>
+            <p class="tech">Java, Binary Trees, Stack-Based Algorithms</p>
+            <ul>
+                <li>Implemented a prefix-notation circuit parser with iterative, stack-based tree construction (no recursion)</li>
+                <li>Evaluated logic gate outputs for given inputs and designed a class hierarchy to meet API specifications</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <h3>Java Puzzle Engines: Sliding Boulder &amp; BlockAddiction</h3>
+            <p class="tagline">multi-cell moves and a backtracking solver</p>
+            <p class="tech">Java, Inheritance, Recursion, Backtracking, API Design</p>
+            <ul>
+                <li>Implemented puzzle-state transitions for multi-cell pieces, enforcing board boundaries, collision rules, and atomic movement constraints</li>
+                <li>Built a recursive backtracking solver that explores valid game states and enumerates possible solution paths</li>
+                <li>Added undo and reset functionality by preserving previous board state without corrupting active game state</li>
+                <li>Built Tetris-like pieces on an AbstractPiece superclass, with safe deep-copy clone() methods to validate moves without mutating state</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <h3>LEGv8 Assembly Sorting Program</h3>
+            <p class="tagline">sorting at the register level</p>
+            <p class="tech">ARMv8, Assembly, Systems Programming</p>
+            <ul>
+                <li>Implemented a sorting algorithm in LEGv8 assembly using explicit register manipulation and low-level memory operations</li>
+                <li>Applied function calling conventions, stack management, and register usage while debugging execution through an emulator</li>
+            </ul>
+        </div>
+
+        <h2>Other Projects</h2>
+
+        <div class="project">
+            <div class="block1" style="max-width: 50%;">
+                <img src="./images/Python.png" alt="Ultimate To-Do List Manager">
+            </div>
+            <h3>Ultimate To-Do List Manager</h3>
+            <p class="tagline">command-line productivity app</p>
+            <p class="tech">Python, Data Structures, File I/O</p>
+            <ul>
+                <li>Built a command-line productivity app with a dictionary-of-lists workflow (backlog, to-do, in progress, completed)</li>
+                <li>Implemented file save/load, input validation, and modular functions for maintainable operations</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <div class="block2" style="max-width: 40%;">
+                <img src="./images/Latex.jpg" alt="Discrete Mathematics Notes and Assignment Template">
+            </div>
+            <h3>Discrete Mathematics Notes &amp; Assignment Template</h3>
+            <p class="tagline">reusable assignment template with diagrams</p>
+            <p class="tech">LaTeX, Mathematical Typesetting, TikZ</p>
+            <ul>
+                <li>Designed a reusable assignment template with custom commands for problems and solutions, ensuring consistent formatting across coursework</li>
+                <li>Created visual representations of graphs, trees, and relations to support formal proofs and explanations</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <div class="block1" style="max-width: 40%;">
+                <img src="./images/html&amp;css.png" alt="HTML and CSS web page">
+            </div>
+            <h3>HTML and CSS Web Page</h3>
+            <p class="tagline">first web page with a navigation bar</p>
+            <p class="tech">HTML, CSS</p>
+            <ul>
+                <li>Designed a web page using HTML and CSS with a navigation bar on top</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="experience">
+    <div class="container">
+        <h2>Experience &amp; Leadership</h2>
+
+        <div class="entry">
+            <div class="entry-head">
+                <h3>Career Peer Advisor</h3>
+                <span class="dates">Fall 2026 to present</span>
+            </div>
+            <p class="org">Iowa State University &middot; Ames, Iowa</p>
+            <ul>
+                <li>Advise students on resumes and internship/job search strategy; manage appointment scheduling and accurate records</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <h3>ISSO Front Desk Staff</h3>
+                <span class="dates">Summer 2025 to present</span>
+            </div>
+            <p class="org">Iowa State University &middot; Ames, Iowa</p>
+            <ul>
+                <li>Provide technical support, scheduling, and system navigation help to students and visitors, including help with international tax forms</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <h3>Ethics of AI Course Grader</h3>
+                <span class="dates">Fall 2025 to present</span>
+            </div>
+            <p class="org">Iowa State University &middot; Ames, Iowa</p>
+            <ul>
+                <li>Evaluate assignments and give feedback on fairness, accountability, and transparency in AI</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-head">
+                <h3>IFYS Leader &amp; Teaching Assistant</h3>
+                <span class="dates">Spring 2024 to Spring 2026</span>
+            </div>
+            <p class="org">Iowa State University &middot; Ames, Iowa</p>
+            <ul>
+                <li>Mentored first-year international students and facilitated class activities and discussions</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="container">
+        <h2>Skills</h2>
+        <dl class="skills">
+            <dt>Languages</dt>
+            <dd>Java, Python, SQL, HTML, CSS, JavaScript, LaTeX, React (basic), LEGv8 assembly (basic)</dd>
+            <dt>Concepts</dt>
+            <dd>Object-Oriented Programming, Data Structures &amp; Algorithms (arrays, linked lists, stacks, queues, hash tables, recursion), REST APIs, ER modeling</dd>
+            <dt>Tools</dt>
+            <dd>Android Studio, Visual Studio, Postman, Git (GitLab), Eclipse, VS Code, MySQL, JUnit, Pandas, JSON, Overleaf</dd>
+            <dt>Other</dt>
+            <dd>Windows troubleshooting, technical communication, public speaking, intercultural awareness</dd>
+        </dl>
+    </div>
 </section>
 
 <section id="contact">
-    
-<div class="container">
-<h2>Contact Me</h2>
-<p>You can reach me at fatimaq@iastate.edu</p>
-</div>
+    <div class="container">
+        <h2>Contact Me</h2>
+        <p>You can reach me at <a href="mailto:fatimaq@iastate.edu">fatimaq@iastate.edu</a>, or send a note below.</p>
+        <form class="contact-form" id="contactForm">
+            <div class="form-row">
+                <div class="form-group"><label class="form-label" for="cfName">Name</label><input class="form-input" id="cfName" name="name" required placeholder="Your name"></div>
+                <div class="form-group"><label class="form-label" for="cfEmail">Email</label><input class="form-input" id="cfEmail" name="email" type="email" required placeholder="you@example.com"></div>
+            </div>
+            <div class="form-group"><label class="form-label" for="cfSubject">Subject</label><input class="form-input" id="cfSubject" name="subject" required placeholder="What is this about?"></div>
+            <div class="form-group"><label class="form-label" for="cfMsg">Message</label><textarea class="form-textarea form-input" id="cfMsg" name="message" required placeholder="Your message"></textarea></div>
+            <button type="submit" class="submit-btn">Send Message</button>
+            <p class="form-note" id="formNote" role="status"></p>
+        </form>
+    </div>
 </section>
 
-<footer>
-
-<p>&copy;  2026 Fatima Qureshi</p>
+<footer class="footer">
+    <div class="footer-content">
+        <a class="footer-brand" href="#about"><span class="logo-icon">FQ</span>Fatima Qureshi</a>
+        <ul class="footer-links"><li><a class="footer-link" href="#about">About Me</a></li><li><a class="footer-link" href="#projects">Projects</a></li><li><a class="footer-link" href="#experience">Experience</a></li><li><a class="footer-link" href="#skills">Skills</a></li><li><a class="footer-link" href="#contact">Contact</a></li></ul>
+        <a class="social-link" href="mailto:fatimaq@iastate.edu" aria-label="Email Fatima"><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg></a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Fatima Qureshi</p>
 </footer>
 
+<script src="./site.js"></script>
+<script src="./cat.js"></script>
+
+<script>
+    // Theme switcher: the swatches set data-theme on <html> and remember the choice
+    (function () {
+        var buttons = document.querySelectorAll('.theme-swatch');
+        var allowed = ['dark', 'silver', 'pearl', 'sky'];
+        var current = document.documentElement.getAttribute('data-theme');
+        if (allowed.indexOf(current) === -1) current = 'dark';
+
+        function apply(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].setAttribute('aria-pressed',
+                    buttons[i].getAttribute('data-theme-choice') === theme ? 'true' : 'false');
+            }
+        }
+
+        apply(current);
+
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', function () {
+                var theme = this.getAttribute('data-theme-choice');
+                apply(theme);
+                try { localStorage.setItem('theme', theme); } catch (e) {}
+            });
+        }
+    })();
+</script>
 
 </body>
 </html>
